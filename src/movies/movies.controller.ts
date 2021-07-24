@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
+import { createMovieDto } from './dto/create-movie.dto'
 import { Movie } from './entity/movies.entitiy'
 import { MoviesService } from './movies.service'
 
@@ -12,13 +13,13 @@ export class MoviesController {
   }
 
   @Get(':id')
-  getOneMoive(@Param('id') movieId: string) {
-    return `get movie with the id ${movieId}`
+  getOneMoive(@Param('id') movieId: number): Movie {
+    return this.moviesService.getOneMovie(movieId)
   }
 
   @Post()
-  createMovie(@Body() MovieInfo) {
-    return 'create Movie'
+  createMovie(@Body() movie: createMovieDto) {
+    return this.moviesService.createMovie(movie)
   }
 
   @Delete(':id')

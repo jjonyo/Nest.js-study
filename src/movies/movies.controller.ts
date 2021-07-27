@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common'
 import { createMovieDto } from './dto/create-movie.dto'
 import { updateMovieDto } from './dto/update-movie.dto'
-import { Movie } from './entity/movies.entitiy'
+import { Movie } from './entity/movies.entity'
 import { MoviesService } from './movies.service'
 
 @Controller('movies')
@@ -17,12 +17,13 @@ export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
   @Get()
-  getAllMovies(): Movie[] {
-    return this.moviesService.getAllMovies()
+  async getAllMovies(): Promise<Movie[]> {
+    const movies = await this.moviesService.getAllMovies()
+    return movies
   }
 
   @Get(':id')
-  getOneMoive(@Param('id') movieId: number): Movie {
+  getOneMoive(@Param('id') movieId: number): Promise<Movie> {
     return this.moviesService.getOneMovie(movieId)
   }
 

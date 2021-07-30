@@ -3,36 +3,48 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
-import { Car } from 'src/car/car.entity';
+} from 'typeorm'
+import { Car } from 'src/car/car.entity'
+import { Task } from './task.entity'
+import { Meeting } from './meeting.entity'
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column()
-  name: string;
+  name: string
 
   @Column()
-  gender: string;
+  gender: string
 
   @Column()
-  age: number;
+  age: number
 
   @OneToOne(() => Car, (car) => car.user)
   @JoinColumn()
-  car: Car;
+  car: Car
 
   @Column({ nullable: true })
-  carId: number;
+  carId: number
+
+  @OneToMany(() => Task, (task) => task.user, { nullable: true })
+  task: Task[]
+
+  @ManyToMany(() => Meeting, (meetings) => meetings.user)
+  @JoinTable()
+  meetings: Meeting[]
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: Date
 }
